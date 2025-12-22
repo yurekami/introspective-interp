@@ -1,0 +1,65 @@
+target_model_path: Qwen/Qwen3-8B
+model_path: Qwen/Qwen3-8B
+continuous_tokens:
+  "begin_continuous": "<|vision_start|>"
+  "end_continuous": "<|vision_end|>"
+  "continuous_rep": "<|vision_pad|>"
+output_dir: /data/artifacts/bzl/autointerp/checkpoints/causal_qwen3_8b_qwen3_8b_hint
+cache_dir: /data/artifacts/bzl/autointerp/checkpoints/
+use_embed_proj: false
+train:
+  num_samples: 100000000
+  batch_size: 8
+  save_strategy: steps
+  save_total_limit: 10
+  save_steps: 2000
+  learning_rate: !!float 5e-5
+  num_epochs: 20
+  eval_strategy: steps
+  eval_steps: 2000
+  peft_lora: false
+  lora_r: 128
+  dataset: ["hint"]
+  evaluation_type: mixed
+  hint_path: Transluce/input_ablation_qwen3_8b_mmlu_hint
+  hf_data_cache_dir: /data/artifacts/bzl/autointerp/datasets/
+  layers: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+  bf16: true
+  tasks:
+    hint_attribution:
+      num_samples: 100000000
+      weight: 1.0
+      self_consistency: false
+      question_types:
+        generative_explanation:
+          evaluation_type: exact_match
+          weight: 1.0
+          layers: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+          prompts:
+            - messages:
+              - role: "system"
+                content: "{system_prompt}"
+              - role: "user"
+                content: |
+                  {user_prompt}
+                  If the hint were removed how would the assistant answer change?
+
+                  Respond with exactly one of the two options below, and nothing else:
+
+                  The output would remain unchanged from <<<Answer: X>>>.
+                  The output would change to <<<Answer: X>>>.
+
+                  Replace X with the answer letter (A, B, C, or D).
+                  Do not include any explanations, reasoning, or extra text.
+
+                  Example outputs:
+                  The output would remain unchanged from <<<Answer: C>>>.
+                  The output would change to <<<Answer: B>>>.
+              - role: "assistant"
+                content: ""
+
+test:
+  batch_size: 8
+  tasks:
+    hint_attribution:
+      num_samples: 3200

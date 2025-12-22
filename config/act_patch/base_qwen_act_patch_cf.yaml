@@ -1,0 +1,47 @@
+target_model_path: Qwen/Qwen3-8B
+model_path: meta-llama/Llama-3.1-8B
+continuous_tokens:
+  "begin_continuous": "<|reserved_special_token_10|>"
+  "end_continuous": "<|reserved_special_token_11|>"
+  "continuous_rep": "<|reserved_special_token_12|>"
+output_dir: /data/artifacts/bzl/autointerp/checkpoints/causal_llama3.1_8b_qwen3_8b_act_patch_cf
+cache_dir: /data/artifacts/bzl/autointerp/checkpoints/
+train:
+  num_samples: 100000000
+  batch_size: 32
+  save_strategy: steps
+  save_total_limit: 10
+  save_steps: 2000
+  learning_rate: !!float 5e-5
+  num_epochs: 20
+  eval_strategy: steps
+  eval_steps: 2000
+  peft_lora: true
+  lora_r: 128
+  dataset: ["causal"]
+  evaluation_type: mixed
+  intervention_path: /data/artifacts/bzl/autointerp/intervention_data/qwen_3_8b_counterfact_activation_patch
+  hf_data_cache_dir: /data/artifacts/bzl/autointerp/datasets/
+  layers: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+  bf16: true
+  tasks:
+    act_patch:
+      num_samples: 100000000
+      question_types:
+        generative_explanation:
+          evaluation_type: exact_match
+          weight: 1.0
+          prompts:
+            - "If feature {begin_continuous}{feature}{end_continuous} at layer {layer} is added to tokens {tokens} when processing the text <<<{input}>>>, how would the output change?\n"
+            - "When feature {begin_continuous}{feature}{end_continuous} at layer {layer} is added at tokens {tokens} in the input <<<{input}>>>, what happens to the model's output?\n"
+            - "Consider the input text: <<<{input}>>>. If we steer layer {layer} towards feature {begin_continuous}{feature}{end_continuous} at tokens {tokens}, how does this affect the generated continuation?\n"
+            - "Given the text <<<{input}>>>, what would be the effect on the output if feature {begin_continuous}{feature}{end_continuous} at layer {layer} is added to tokens {tokens}?\n"
+            - "If we steer towards feature {begin_continuous}{feature}{end_continuous} at layer {layer} and tokens {tokens} when processing <<<{input}>>>, how would the model's response differ?\n"
+
+test:
+  batch_size: 16
+  tasks:
+    act_patch:
+      num_samples: 3200
+      intervention_path: Transluce/act_patch_qwen3_8b_counterfact
+      evaluation_type: exact_match
