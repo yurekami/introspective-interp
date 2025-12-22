@@ -1,6 +1,7 @@
 # Training Language Models To Explain Their Own Computations
 
 [![Paper](https://img.shields.io/badge/arXiv-2511.08579-b31b1b.svg)](https://arxiv.org/abs/2511.08579)
+[![HuggingFace](https://img.shields.io/badge/🤗%20HuggingFace-Collection-yellow)](https://huggingface.co/collections/Transluce/training-language-models-to-explain-their-own-computations)
 
 This repository contains the code and data for the paper **"[Training Language Models To Explain Their Own Computations](https://arxiv.org/abs/2511.08579)"**.
 
