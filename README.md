@@ -31,7 +31,7 @@ This repository contains the code and data for the paper **"[Training Language M
 
 ### Installation
 ```bash
-git clone <repository-url>
+git clone https://github.com/TransluceAI/introspective-interp.git
 cd introspective-interp
 # All packages are in pyproject.toml and will be auto-downloaded on first `uv run`
 ```
