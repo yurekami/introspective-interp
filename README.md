@@ -4,6 +4,24 @@
 
 This repository contains the code and data for the paper **"Training Language Models To Explain Their Own Computations"**.
 
+## 📋 Table of Contents
+
+- [🚀 Quick Start](#-quick-start)
+- [Tasks Overview](#tasks-overview)
+- [Feature Descriptions](#feature-descriptions)
+  - [📥 Data & Checkpoints](#-data--checkpoints)
+  - [🏋️ Training](#️-training)
+  - [📊 Evaluation](#-evaluation)
+- [Activation Patching](#activation-patching)
+  - [📥 Data & Checkpoints](#-data--checkpoints-1)
+  - [🏋️ Training](#️-training-1)
+  - [📊 Evaluation](#-evaluation-1)
+- [Input Ablations](#input-ablations)
+  - [📥 Data & Checkpoints](#-data--checkpoints-2)
+  - [🏋️ Training](#️-training-2)
+  - [📊 Evaluation](#-evaluation-2)
+- [📄 Citation](#-citation)
+
 ## 🚀 Quick Start
 
 ### Prerequisites
